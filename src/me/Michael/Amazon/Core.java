@@ -11,32 +11,62 @@ import me.Michael.Amazon.Credentials;
 import me.Michael.Amazon.Utils;
 import me.Michael.Amazon.Queries;
 import me.Michael.Amazon.User;
+import me.Michael.Amazon.ActionMenus;
 
 public class Core {
-
 	public static void main(String[] args) {
 		Database.connect("jdbc:mariadb://localhost:33806/amazon", "root", "root");
 		Scanner scanner = new Scanner(System.in);
 		String input = "";
 		HashMap<String, String> loginSignup = Utils.createPairs("1", "Login", "2", "Signup");
+		boolean exit = false;
 		do {
 			Menu.prompt("Main Menu", loginSignup);
 			input = scanner.nextLine();
 			Menu.close();
 			if(loginSignup.containsKey(input)) {
 				if(input.equals("1")) {
-					boolean usernameValid = false, passwordValid = false;
+					User user = null;
+					boolean loggedIn = false, passwordValid = false;
 					do {
 						HashMap<String, String> login = Credentials.login(scanner);
 						if(Utils.validPassword(login.get("password"))) {
-							User user = new User(1, "", "", "", "", "ROLE");
-							System.out.println(user.getFormattedRole());
-							passwordValid = true;
+							ResultSet userQuery = Queries.getUser(login.get("username"), login.get("password"));
+							try {
+								//if(userQuery.next()) {
+									while(userQuery.next()) {
+										int userID = userQuery.getInt("userID");
+										String firstName = userQuery.getString("firstName");
+										String lastName = userQuery.getString("lastName");
+										String username = userQuery.getString("username");
+										String password = userQuery.getString("password");
+										String role = userQuery.getString("role");
+										user = new User(userID, firstName, lastName, username, password, role);
+										System.out.println(user.getFirstName());
+										loggedIn = true;
+										
+										// User found, login valid
+									}
+									userQuery.close();
+								/*}else {
+									System.out.println("Invalid login!");
+								}*/
+							} catch (SQLException e) {
+								e.printStackTrace();
+							}
 						}else {
 							System.out.println("Invalid password!");
 						}
-					}while (!passwordValid);
-					
+					}while (loggedIn == false);
+					System.out.println("Outside loop : " + loggedIn);
+					if(loggedIn) {
+						switch(user.getRole()) {
+							case "CUSTOMER":
+								exit = ActionMenus.customer(scanner, user);
+							default: 
+								ActionMenus.customer(scanner, user);
+						}
+					}
 				}else if(input.equals("2")) {
 					boolean usernameValid = false, passwordValid = false;
 					do {
@@ -72,7 +102,7 @@ public class Core {
 			}else {
 				System.out.println("Invalid choice!");
 			}
-		}while (!input.equals("exit"));
+		}while (!exit && !input.equals("exit"));
 		/*ResultSet query0 = database.retrieve("SELECT * FROM person");
 		try {
 			while(query0.next()) {

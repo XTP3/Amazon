@@ -40,9 +40,16 @@ public class Queries {
 			}
 			user.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return taken;
+	}
+	
+	public static ResultSet getUser(String username, String password) {
+		return Database.retrieve("SELECT * FROM users WHERE username='" + username + "' AND password='" + password + "'");
+	}
+	
+	public static ResultSet getProducts() {
+		return Database.retrieve("SELECT * FROM products");
 	}
 }
