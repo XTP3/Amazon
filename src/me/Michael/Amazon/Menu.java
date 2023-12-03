@@ -11,7 +11,7 @@ public class Menu {
 		for(Map.Entry<String,String> option : options.entrySet()) {
 			System.out.println(option.getKey() + ") " + option.getValue());
 		}
-		System.out.print("\nChoice: ");
+		//System.out.print("\nChoice: ");
 	}
 	
 	public static void close() {
