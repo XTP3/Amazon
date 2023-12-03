@@ -4,7 +4,7 @@ public class User {
 	private String userID, username, password, role;
 	private String firstName, lastName, state, city, zipCode, streetAddress, billingType, email;
 	private boolean primeStatus;
-	private int cardNumber, phoneNumber;
+	private long cardNumber, phoneNumber;
 	
 	public User(String userID, String username, String password, String role) {
 		this.userID = userID;
@@ -13,7 +13,7 @@ public class User {
 		this.role = role;
 	}
 	
-	public void setCustomerDetails(String firstName, String lastName, String state, String city, String zipCode, String streetAddress, String billingType, int cardNumber, boolean primeStatus, int phoneNumber, String email) {
+	public void setCustomerDetails(String firstName, String lastName, String state, String city, String zipCode, String streetAddress, String billingType, long cardNumber, boolean primeStatus, long phoneNumber, String email) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.state = state;
@@ -83,11 +83,11 @@ public class User {
         return this.billingType;
     }
 
-    public int getCardNumber() {
+    public long getCardNumber() {
         return this.cardNumber;
     }
 
-    public int getPhoneNumber() {
+    public long getPhoneNumber() {
         return this.phoneNumber;
     }
 

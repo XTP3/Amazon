@@ -44,13 +44,16 @@ public class Queries {
 	        preparedStatement.setString(6, user.getZipCode());
 	        preparedStatement.setString(7, user.getStreetAddress());
 	        preparedStatement.setString(8, user.getBillingType());
-	        preparedStatement.setInt(9, user.getCardNumber());
+	        preparedStatement.setLong(9, user.getCardNumber());
 	        preparedStatement.setBoolean(10, user.getPrimeStatus());
-	        preparedStatement.setInt(11, user.getPhoneNumber());
+	        preparedStatement.setLong(11, user.getPhoneNumber());
 	        preparedStatement.setString(12, user.getEmail());
-
-	        return new RegistrationResult(preparedStatement.executeUpdate() > 0, user.getUserID());
-	    } catch (SQLException e) {
+	        
+	        RegistrationResult result = new RegistrationResult(preparedStatement.executeUpdate() > 0, user.getUserID());
+	        result.setUser(user);
+	        
+	        return result;
+	    }catch (SQLException e) {
 	        e.printStackTrace();
 	    }
 		return new RegistrationResult(false, "");
@@ -64,7 +67,21 @@ public class Queries {
 				taken = true;
 			}
 			user.close();
-		} catch (SQLException e) {
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return taken;
+	}
+	
+	public static boolean venderNameTaken(String vendorName) {
+		boolean taken = false;
+		ResultSet vendor = Database.retrieve("SELECT vendorName FROM vendor WHERE vendorName='" + vendorName + "'");
+		try {
+			while(vendor.next()) {
+				taken = true;
+			}
+			vendor.close();
+		}catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return taken;

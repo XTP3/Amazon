@@ -10,11 +10,12 @@ import java.util.regex.Pattern;
 import me.Michael.Amazon.InputLoop;
 import me.Michael.Amazon.Menu;
 import me.Michael.Amazon.Queries;
+import me.Michael.Amazon.RegistrationResult;
 import me.Michael.Amazon.User;
 
 public class Customer {
 	private User user;
-	private boolean registrationSuccessful;
+	private RegistrationResult registration;
 	
 	private boolean validLength(String str, int x, int y) {
 		return str.length() > x && str.length() <= y;
@@ -40,28 +41,18 @@ public class Customer {
 	}
 	
 	public static String formatBillingType(String input) {
-        String[] exceptions = {"AMERICAN EXPRESS"};
-        
-        // Check if the input matches any exception
-        for(String exception : exceptions) {
-            if (input.equalsIgnoreCase(exception)) {
-                return exception.substring(0, 1) + exception.substring(1).toLowerCase();
-            }
-        }
-        
-        // Split the input into words
-        String[] words = input.toLowerCase().split(" ");
-        StringBuilder capitalized = new StringBuilder();
-        
-        for(String word : words) {
-            if(word.length() > 1) {
-                capitalized.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1)).append(" ");
-            }else {
-                capitalized.append(Character.toUpperCase(word.charAt(0))).append(" ");
-            }
-        }
-        
-        return capitalized.toString().trim();
+		switch(input.toUpperCase()) {
+			case "DISCOVER":
+				return "Discover";
+			case "MASTERCARD":
+				return "MasterCard";
+			case "VISA":
+				return "Visa";
+			case "AMERICAN EXPRESS":
+				return "American Express";
+			default:
+				return "DISCOVER";
+		}
     }
 	
 	public Customer(Scanner scanner, User user) {
@@ -73,9 +64,9 @@ public class Customer {
 		Predicate<String> zipCodeCondition = input -> validLength(input, 3, 6);
 		Predicate<String> streetAddressCondition = input -> validLength(input, 0, 50);
 		Predicate<String> billingTypeCondition = input -> billingTypes.contains(input.toUpperCase());
-		Predicate<String> cardNumberCondition = input -> isInt(input) && isAllDigits(input) && input.length() == 16;
+		Predicate<String> cardNumberCondition = input -> isAllDigits(input) && input.length() == 16;
 		Predicate<String> primeStatusCondition = input -> input.toLowerCase().equals("y") || input.toLowerCase().equals("n");
-		Predicate<String> phoneNumberCondition = input -> isInt(input) && input.length() == 10;
+		Predicate<String> phoneNumberCondition = input -> isAllDigits(input) && input.length() == 10;
 		Predicate<String> emailCondition = input -> validLength(input, 0, 30);
 		Menu.close();
 		System.out.println("Customer Details\n");
@@ -90,16 +81,16 @@ public class Customer {
 		String primeStatus = InputLoop.stringInputLoop(scanner, primeStatusCondition, "Sign up for Prime? (y/n): ", "Invalid input! Must be 'Y' or 'N'.");
 		String phoneNumber = InputLoop.stringInputLoop(scanner, phoneNumberCondition, "Phone Number: ", "Invalid phone number! Must be 10 digits long.");
 		String email = InputLoop.stringInputLoop(scanner, emailCondition, "Email: ", "Invalid email! Must be between 1-30 characters long.");
-		this.user.setCustomerDetails(firstName, lastName, state, city, zipCode, streetAddress, formatBillingType(billingType), Integer.parseInt(cardNumber), getPrimeStatusAsBoolean(primeStatus), Integer.parseInt(phoneNumber), email);
-		this.registrationSuccessful = Queries.registerNewCustomer(this.user).successful();
+		this.user.setCustomerDetails(firstName, lastName, state, city, zipCode, streetAddress, formatBillingType(billingType), Long.parseLong(cardNumber), getPrimeStatusAsBoolean(primeStatus), Long.parseLong(phoneNumber), email.toLowerCase());
+		this.registration = Queries.registerNewCustomer(this.user);
 	}
 	
 	public User getUser() {
 		return this.user;
 	}
 	
-	public boolean registrationSuccessful() {
-		return this.registrationSuccessful;
+	public RegistrationResult getRegistrationResult() {
+		return this.registration;
 		
 	}
 }

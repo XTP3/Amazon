@@ -2,26 +2,30 @@ package me.Michael.Menus;
 
 import java.util.Scanner;
 
-import me.Michael.Menus.Customer;
-import me.Michael.Menus.Vendor;
+import me.Michael.Amazon.RegistrationResult;
 import me.Michael.Amazon.User;
 
 public class MenuRoleSwitch {
-
+	private RegistrationResult registrationResult;
+	
 	public MenuRoleSwitch(Scanner scanner, User user) {
 		switch(user.getRole()) {
 			case "CUSTOMER":
-				new Customer(scanner, user);
+				this.registrationResult = new Customer(scanner, user).getRegistrationResult();
 				break;
 				
 			case "VENDOR":
-				new Vendor(scanner, user);
+				this.registrationResult = new Vendor(scanner, user).getRegistrationResult();
 				break;
 				
 			default: 
-				new Customer(scanner, user);
+				this.registrationResult = new Customer(scanner, user).getRegistrationResult();
 				break;
 		}
 	}
 
+	public RegistrationResult getRegistrationResult() {
+		return this.registrationResult;
+	}
+	
 }

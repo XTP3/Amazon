@@ -1,8 +1,9 @@
 package me.Michael.Amazon;
 
 public class RegistrationResult {
-	 private final boolean success;
-	 private final String userID;
+	 private boolean success;
+	 private String userID;
+	 private User user;
 	 
 	 public RegistrationResult(boolean success, String userID) {
 		 this.success = success;
@@ -15,5 +16,13 @@ public class RegistrationResult {
 	 
 	 public String getUserID() {
 		 return this.userID;
+	 }
+	 
+	 public void setUser(User user) {
+		 this.user = user;
+	 }
+	 
+	 public User getUser() {
+		 return this.user;
 	 }
 }

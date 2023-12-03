@@ -27,7 +27,12 @@ public class Core {
 			
 		}else if(input.equals("2")) {
 			Signup signup = new Signup(scanner);
-			new MenuRoleSwitch(scanner, signup.getUser());
+			RegistrationResult customerRegistration = new MenuRoleSwitch(scanner, signup.getUser()).getRegistrationResult();
+			if(customerRegistration.successful()) {
+				new ActionMenuRoleSwitch(scanner, signup.getUser());
+			}else {
+				System.out.println("Customer registration failed!");
+			}
 			
 		}else if(input.toLowerCase().equals("exit")) {
 			System.out.println("Goodbye!");
