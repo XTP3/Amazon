@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.function.Predicate;
+import java.util.regex.Pattern;
 
 import me.Michael.Amazon.InputLoop;
 import me.Michael.Amazon.Menu;
@@ -13,19 +14,22 @@ import me.Michael.Amazon.User;
 
 public class Customer {
 	private User user;
+	private boolean registrationSuccessful;
 	
 	private boolean validLength(String str, int x, int y) {
 		return str.length() > x && str.length() <= y;
 	}
 	
-	private boolean isInt(String str) {
-		try {
-			Integer.parseInt(str);
-			return true;
-		}catch (NumberFormatException e) {
-			return false;
-		}
-	}
+	private static boolean isInt(String input) {
+        // Regular expression to match an integer
+        String integerPattern = "^-?\\d+$"; // Matches positive and negative integers
+
+        return Pattern.matches(integerPattern, input);
+    }
+	
+	private boolean isAllDigits(String input) {
+        return input.matches("\\d+");
+    }
 	
 	private boolean getPrimeStatusAsBoolean(String primeStatus) {
 		if(primeStatus.toLowerCase().equals("y")) {
@@ -69,7 +73,7 @@ public class Customer {
 		Predicate<String> zipCodeCondition = input -> validLength(input, 3, 6);
 		Predicate<String> streetAddressCondition = input -> validLength(input, 0, 50);
 		Predicate<String> billingTypeCondition = input -> billingTypes.contains(input.toUpperCase());
-		Predicate<String> cardNumberCondition = input -> isInt(input) && input.length() == 16;
+		Predicate<String> cardNumberCondition = input -> isInt(input) && isAllDigits(input) && input.length() == 16;
 		Predicate<String> primeStatusCondition = input -> input.toLowerCase().equals("y") || input.toLowerCase().equals("n");
 		Predicate<String> phoneNumberCondition = input -> isInt(input) && input.length() == 10;
 		Predicate<String> emailCondition = input -> validLength(input, 0, 30);
@@ -87,10 +91,15 @@ public class Customer {
 		String phoneNumber = InputLoop.stringInputLoop(scanner, phoneNumberCondition, "Phone Number: ", "Invalid phone number! Must be 10 digits long.");
 		String email = InputLoop.stringInputLoop(scanner, emailCondition, "Email: ", "Invalid email! Must be between 1-30 characters long.");
 		this.user.setCustomerDetails(firstName, lastName, state, city, zipCode, streetAddress, formatBillingType(billingType), Integer.parseInt(cardNumber), getPrimeStatusAsBoolean(primeStatus), Integer.parseInt(phoneNumber), email);
-		Queries.registerNewCustomer(this.user);
+		this.registrationSuccessful = Queries.registerNewCustomer(this.user).successful();
 	}
 	
 	public User getUser() {
 		return this.user;
+	}
+	
+	public boolean registrationSuccessful() {
+		return this.registrationSuccessful;
+		
 	}
 }
