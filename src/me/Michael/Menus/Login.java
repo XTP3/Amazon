@@ -33,6 +33,43 @@ public class Login {
 				e.printStackTrace();
 			}
 		}while (!loggedIn);
+		if(loggedIn) {
+			if(user.getRole().equals("CUSTOMER")) {
+				ResultSet customerQuery = Queries.getCustomer(this.user.getUserID());
+				try  {
+					if(customerQuery.next()) {
+						String firstName = customerQuery.getString("firstName");
+						String lastName = customerQuery.getString("lastName");
+						String state = customerQuery.getString("state");
+						String city = customerQuery.getString("city");
+						String zipCode = customerQuery.getString("zipCode");
+						String streetAddress = customerQuery.getString("streetAddress");
+						String billingType = customerQuery.getString("billingType");
+						long cardNumber = customerQuery.getLong("cardNumber");
+						boolean primeStatus = customerQuery.getBoolean("primeStatus");
+						long phoneNumber = customerQuery.getLong("phoneNumber");
+						String email = customerQuery.getString("email");
+						this.user.setCustomer(new me.Michael.Amazon.Customer(firstName, lastName, state, city, zipCode, streetAddress, billingType, cardNumber, primeStatus, phoneNumber, email));
+					}
+				}catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}else if(user.getRole().equals("VENDOR")) {
+				ResultSet vendorQuery = Queries.getVendor(user.getUserID());
+				try {
+					if(vendorQuery.next()) {
+						String vendorName = vendorQuery.getString("vendorName");
+						long phoneNumber = vendorQuery.getLong("phoneNumber");
+						String email = vendorQuery.getString("email");
+						long routingNumber = vendorQuery.getLong("routingNumber");
+						long accountNumber = vendorQuery.getLong("accountNumber");
+						this.user.setVendor(new me.Michael.Amazon.Vendor(user.getUserID(), vendorName, phoneNumber, email, routingNumber, accountNumber));
+					}
+				}catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
 	public User getUser() {

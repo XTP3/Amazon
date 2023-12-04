@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.function.Predicate;
-import java.util.regex.Pattern;
 
 import me.Michael.Amazon.InputLoop;
 import me.Michael.Amazon.Menu;

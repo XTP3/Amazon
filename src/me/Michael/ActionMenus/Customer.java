@@ -1,6 +1,6 @@
 package me.Michael.ActionMenus;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Scanner;
 import java.util.function.Predicate;
 
@@ -10,7 +10,7 @@ import me.Michael.Utils.Utils;
 public class Customer {
 
 	public Customer(Scanner scanner, User user) {
-		HashMap<String, String> customerActions = Utils.createPairs(
+		LinkedHashMap<String, String> customerActions = Utils.createPairs(
 				"1", "View Products", 
 				"2", "View Personal Wishlist", 
 				"3", "Clear Personal Wishlist", 

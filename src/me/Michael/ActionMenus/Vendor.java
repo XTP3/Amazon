@@ -1,6 +1,6 @@
 package me.Michael.ActionMenus;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Scanner;
 import java.util.function.Predicate;
 
@@ -10,7 +10,7 @@ import me.Michael.Utils.Utils;
 public class Vendor {
 
 	public Vendor(Scanner scanner, User user) {
-		HashMap<String, String> vendorActions = Utils.createPairs(
+		LinkedHashMap<String, String> vendorActions = Utils.createPairs(
 				"1", "Create new Product",
 				"2", "View Customers", 
 				"3", "View Products",

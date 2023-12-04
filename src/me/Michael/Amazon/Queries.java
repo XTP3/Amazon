@@ -114,7 +114,51 @@ public class Queries {
 		return Database.retrieve("SELECT * FROM user WHERE username='" + username + "' AND password='" + password + "'");
 	}
 	
+	public static ResultSet getCustomer(String customerID) {
+		return Database.retrieve("SELECT * FROM customer WHERE customerID='" + customerID + "'");
+	}
+	
+	public static ResultSet getAllCustomers() {
+		return Database.retrieve("SELECT * FROM customer");
+	}
+	
+	public static ResultSet getVendor(String vendorID) {
+		return Database.retrieve("SELECT * FROM vendor WHERE vendorID='" + vendorID + "'");
+	}
+	
 	public static ResultSet getProducts() {
 		return Database.retrieve("SELECT * FROM products");
+	}
+	
+	public static ResultSet getAllProducts() {
+		return Database.retrieve("SELECT * FROM product");
+	}
+	
+	public static ResultSet getAllVendors() {
+		return Database.retrieve("SELECT * FROM vendor");
+	}
+	
+	public static ResultSet getAllOrders() {
+		return Database.retrieve("SELECT * FROM orders");
+	}
+	
+	public static ResultSet getAllSales() {
+		return Database.retrieve("SELECT * FROM sales");
+	}
+	
+	public static ResultSet getAllCarts() {
+		return Database.retrieve("SELECT * FROM cart");
+	}
+	
+	public static ResultSet getAllWishlists() {
+		return Database.retrieve("SELECT * FROM wishlist");
+	}
+	
+	public static ResultSet getAllMusic() {
+		return Database.retrieve("SELECT * FROM music");
+	}
+	
+	public static ResultSet getAllVideos() {
+		return Database.retrieve("SELECT * FROM video");
 	}
 }

@@ -1,6 +1,6 @@
 package me.Michael.Utils;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Random;
 import java.util.regex.Pattern;
 
@@ -14,11 +14,11 @@ public class Utils {
 		System.out.println("Loading...");
 	}
 	
-	public static HashMap<String, String> createPairs(String... strings) {
+	public static LinkedHashMap<String, String> createPairs(String... strings) {
         if(strings.length % 2 != 0) { // Provided is even
             throw new IllegalArgumentException("Odd number of strings provided. Pairs are expected.");
         }
-        HashMap<String, String> pairsMap = new HashMap<>();
+        LinkedHashMap<String, String> pairsMap = new LinkedHashMap<>();
         for (int i = 0; i < strings.length; i += 2) {
             String key = strings[i];
             String value = strings[i + 1];

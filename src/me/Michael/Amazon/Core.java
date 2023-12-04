@@ -28,7 +28,7 @@ public class Core {
 		String input = InputLoop.stringInputLoop(scanner, condition, "\nChoice: ", "Invalid choice!");
 		if(input.equals("1")) {
 			Login login = new Login(scanner);
-			System.out.println(login.getUser().getUserID() + " " + login.getUser().getUsername() + " " + login.getUser().getPassword() + " " + login.getUser().getRole());
+			//System.out.println(login.getUser().getUserID() + " " + login.getUser().getUsername() + " " + login.getUser().getPassword() + " " + login.getUser().getRole());
 			new ActionMenuRoleSwitch(scanner, login.getUser());
 			
 		}else if(input.equals("2")) {
