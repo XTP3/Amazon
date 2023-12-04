@@ -34,20 +34,43 @@ public class Queries {
 	
 	public static RegistrationResult registerNewCustomer(User user) {
 		String query = "INSERT INTO customer (customerID, firstName, lastName, state, city, zipCode, streetAddress, billingType, cardNumber, primeStatus, phoneNumber, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-	    
+		Customer customer = user.getCustomer();
+		
 	    try (PreparedStatement preparedStatement = Database.connection.prepareStatement(query)) {
 	    	preparedStatement.setString(1, user.getUserID());
-	        preparedStatement.setString(2, user.getFirstName());
-	        preparedStatement.setString(3, user.getLastName());
-	        preparedStatement.setString(4, user.getState());
-	        preparedStatement.setString(5, user.getCity());
-	        preparedStatement.setString(6, user.getZipCode());
-	        preparedStatement.setString(7, user.getStreetAddress());
-	        preparedStatement.setString(8, user.getBillingType());
-	        preparedStatement.setLong(9, user.getCardNumber());
-	        preparedStatement.setBoolean(10, user.getPrimeStatus());
-	        preparedStatement.setLong(11, user.getPhoneNumber());
-	        preparedStatement.setString(12, user.getEmail());
+	        preparedStatement.setString(2, customer.getFirstName());
+	        preparedStatement.setString(3, customer.getLastName());
+	        preparedStatement.setString(4, customer.getState());
+	        preparedStatement.setString(5, customer.getCity());
+	        preparedStatement.setString(6, customer.getZipCode());
+	        preparedStatement.setString(7, customer.getStreetAddress());
+	        preparedStatement.setString(8, customer.getBillingType());
+	        preparedStatement.setLong(9, customer.getCardNumber());
+	        preparedStatement.setBoolean(10, customer.getPrimeStatus());
+	        preparedStatement.setLong(11, customer.getPhoneNumber());
+	        preparedStatement.setString(12, customer.getEmail());
+	        
+	        RegistrationResult result = new RegistrationResult(preparedStatement.executeUpdate() > 0, user.getUserID());
+	        result.setUser(user);
+	        
+	        return result;
+	    }catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+		return new RegistrationResult(false, "");
+	}
+	
+	public static RegistrationResult registerNewVendor(User user) {
+		String query = "INSERT INTO vendor (vendorID, vendorName, phoneNumber, email, routingNumber, accountNumber) VALUES (?, ?, ?, ?, ?, ?)";
+		Vendor vendor = user.getVendor();
+		
+	    try (PreparedStatement preparedStatement = Database.connection.prepareStatement(query)) {
+	    	preparedStatement.setString(1, user.getUserID());
+	        preparedStatement.setString(2, vendor.getVendorName());
+	        preparedStatement.setLong(3, vendor.getPhoneNumber());
+	        preparedStatement.setString(4, vendor.getEmail());
+	        preparedStatement.setLong(5, vendor.getRoutingNumber());
+	        preparedStatement.setLong(6, vendor.getAccountNumber());
 	        
 	        RegistrationResult result = new RegistrationResult(preparedStatement.executeUpdate() > 0, user.getUserID());
 	        result.setUser(user);

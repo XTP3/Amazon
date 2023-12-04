@@ -2,9 +2,8 @@ package me.Michael.Amazon;
 
 public class User {
 	private String userID, username, password, role;
-	private String firstName, lastName, state, city, zipCode, streetAddress, billingType, email;
-	private boolean primeStatus;
-	private long cardNumber, phoneNumber;
+	private Customer customer;
+	private Vendor vendor;
 	
 	public User(String userID, String username, String password, String role) {
 		this.userID = userID;
@@ -13,38 +12,24 @@ public class User {
 		this.role = role;
 	}
 	
-	public void setCustomerDetails(String firstName, String lastName, String state, String city, String zipCode, String streetAddress, String billingType, long cardNumber, boolean primeStatus, long phoneNumber, String email) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.state = state;
-		this.city = city;
-		this.zipCode = zipCode;
-		this.streetAddress = streetAddress;
-		this.billingType = billingType;
-		this.cardNumber = cardNumber;
-		this.primeStatus = primeStatus;
-		this.phoneNumber = phoneNumber;
-		this.email = email;
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 	
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public Customer getCustomer() {
+		return this.customer;
 	}
 	
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setVendor(Vendor vendor) {
+		this.vendor = vendor;
+	}
+	
+	public Vendor getVendor() {
+		return this.vendor;
 	}
 	
 	public String getUserID() {
 		return this.userID;
-	}
-	
-	public String getFirstName() {
-		return this.firstName;
-	}
-	
-	public String getLastName() {
-		return this.lastName;
 	}
 	
 	public String getUsername() {
@@ -62,40 +47,4 @@ public class User {
 	public String getFormattedRole() {
 		return this.role.substring(0, 1).toUpperCase() + this.role.substring(1).toLowerCase();
 	}
-	
-    public String getState() {
-        return this.state;
-    }
-
-    public String getCity() {
-        return this.city;
-    }
-
-    public String getZipCode() {
-        return this.zipCode;
-    }
-
-    public String getStreetAddress() {
-        return this.streetAddress;
-    }
-
-    public String getBillingType() {
-        return this.billingType;
-    }
-
-    public long getCardNumber() {
-        return this.cardNumber;
-    }
-
-    public long getPhoneNumber() {
-        return this.phoneNumber;
-    }
-
-    public String getEmail() {
-        return this.email;
-    }
-
-    public boolean getPrimeStatus() {
-        return this.primeStatus;
-    }
 }

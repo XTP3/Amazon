@@ -2,8 +2,7 @@ package me.Michael.Utils;
 
 import java.util.HashMap;
 import java.util.Random;
-
-import me.Michael.Amazon.NanoID;
+import java.util.regex.Pattern;
 
 public class Utils {
 
@@ -31,4 +30,19 @@ public class Utils {
 	public static String generateUniqueID(int size) {
 		return NanoID.randomNanoId(new Random(), NanoID.DEFAULT_ALPHABET, size);
 	}
+	
+	public static boolean validLength(String str, int x, int y) {
+		return str.length() > x && str.length() <= y;
+	}
+	
+	public static boolean isInt(String input) {
+        // Regular expression to match an integer
+        String integerPattern = "^-?\\d+$"; // Matches positive and negative integers
+
+        return Pattern.matches(integerPattern, input);
+    }
+	
+	public static boolean isAllDigits(String input) {
+        return input.matches("\\d+");
+    }
 }

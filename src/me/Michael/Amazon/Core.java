@@ -12,6 +12,12 @@ import me.Michael.Menus.MenuRoleSwitch;
 import me.Michael.Menus.Signup;
 import me.Michael.Utils.Utils;
 
+/**
+ * A project to demonstrate interfacing with an SQL server.
+ *
+ * @author XTP3
+ */
+
 public class Core {
 	public static void main(String[] args) {
 		Database.connect("jdbc:mariadb://localhost:33806/amazon", "root", "root");
@@ -27,11 +33,11 @@ public class Core {
 			
 		}else if(input.equals("2")) {
 			Signup signup = new Signup(scanner);
-			RegistrationResult customerRegistration = new MenuRoleSwitch(scanner, signup.getUser()).getRegistrationResult();
-			if(customerRegistration.successful()) {
+			RegistrationResult roleRegistration = new MenuRoleSwitch(scanner, signup.getUser()).getRegistrationResult();
+			if(roleRegistration.successful()) {
 				new ActionMenuRoleSwitch(scanner, signup.getUser());
 			}else {
-				System.out.println("Customer registration failed!");
+				System.out.println("Role registration failed!");
 			}
 			
 		}else if(input.toLowerCase().equals("exit")) {

@@ -12,25 +12,11 @@ import me.Michael.Amazon.Menu;
 import me.Michael.Amazon.Queries;
 import me.Michael.Amazon.RegistrationResult;
 import me.Michael.Amazon.User;
+import me.Michael.Utils.Utils;
 
 public class Customer {
 	private User user;
 	private RegistrationResult registration;
-	
-	private boolean validLength(String str, int x, int y) {
-		return str.length() > x && str.length() <= y;
-	}
-	
-	private static boolean isInt(String input) {
-        // Regular expression to match an integer
-        String integerPattern = "^-?\\d+$"; // Matches positive and negative integers
-
-        return Pattern.matches(integerPattern, input);
-    }
-	
-	private boolean isAllDigits(String input) {
-        return input.matches("\\d+");
-    }
 	
 	private boolean getPrimeStatusAsBoolean(String primeStatus) {
 		if(primeStatus.toLowerCase().equals("y")) {
@@ -58,16 +44,16 @@ public class Customer {
 	public Customer(Scanner scanner, User user) {
 		this.user = user;
 		List<String> billingTypes = new ArrayList<>(Arrays.asList("DISCOVER", "MASTERCARD", "VISA", "AMERICAN EXPRESS"));
-		Predicate<String> nameCondition = input -> validLength(input, 0, 25);
+		Predicate<String> nameCondition = input -> Utils.validLength(input, 0, 25);
 		Predicate<String> stateCondition = input -> input.length() == 2;
-		Predicate<String> cityCondition = input -> validLength(input, 0, 25);
-		Predicate<String> zipCodeCondition = input -> validLength(input, 3, 6);
-		Predicate<String> streetAddressCondition = input -> validLength(input, 0, 50);
+		Predicate<String> cityCondition = input -> Utils.validLength(input, 0, 25);
+		Predicate<String> zipCodeCondition = input -> Utils.validLength(input, 3, 6);
+		Predicate<String> streetAddressCondition = input -> Utils.validLength(input, 0, 50);
 		Predicate<String> billingTypeCondition = input -> billingTypes.contains(input.toUpperCase());
-		Predicate<String> cardNumberCondition = input -> isAllDigits(input) && input.length() == 16;
+		Predicate<String> cardNumberCondition = input -> Utils.isAllDigits(input) && input.length() == 16;
 		Predicate<String> primeStatusCondition = input -> input.toLowerCase().equals("y") || input.toLowerCase().equals("n");
-		Predicate<String> phoneNumberCondition = input -> isAllDigits(input) && input.length() == 10;
-		Predicate<String> emailCondition = input -> validLength(input, 0, 30);
+		Predicate<String> phoneNumberCondition = input -> Utils.isAllDigits(input) && input.length() == 10;
+		Predicate<String> emailCondition = input -> Utils.validLength(input, 0, 255);
 		Menu.close();
 		System.out.println("Customer Details\n");
 		String firstName = InputLoop.stringInputLoop(scanner, nameCondition, "First Name: ", "Invalid first name! Must be between 1-25 characters long.");
@@ -80,8 +66,8 @@ public class Customer {
 		String cardNumber = InputLoop.stringInputLoop(scanner, cardNumberCondition, "Card Number: ", "Invalid card number! Must be 16 digits long.");
 		String primeStatus = InputLoop.stringInputLoop(scanner, primeStatusCondition, "Sign up for Prime? (y/n): ", "Invalid input! Must be 'Y' or 'N'.");
 		String phoneNumber = InputLoop.stringInputLoop(scanner, phoneNumberCondition, "Phone Number: ", "Invalid phone number! Must be 10 digits long.");
-		String email = InputLoop.stringInputLoop(scanner, emailCondition, "Email: ", "Invalid email! Must be between 1-30 characters long.");
-		this.user.setCustomerDetails(firstName, lastName, state, city, zipCode, streetAddress, formatBillingType(billingType), Long.parseLong(cardNumber), getPrimeStatusAsBoolean(primeStatus), Long.parseLong(phoneNumber), email.toLowerCase());
+		String email = InputLoop.stringInputLoop(scanner, emailCondition, "Email: ", "Invalid email! Must be between 1-255 characters long.");
+		this.user.setCustomer(new me.Michael.Amazon.Customer(firstName, lastName, state, city, zipCode, streetAddress, formatBillingType(billingType), Long.parseLong(cardNumber), getPrimeStatusAsBoolean(primeStatus), Long.parseLong(phoneNumber), email.toLowerCase()));
 		this.registration = Queries.registerNewCustomer(this.user);
 	}
 	

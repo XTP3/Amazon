@@ -26,7 +26,6 @@ public class Signup {
 				Menu.prompt("Role Selection", roles);
 				roleChoice = InputLoop.stringInputLoop(scanner, roleCondition, "\nRole: ", "Invalid role!");
 				Menu.close();
-				Utils.loading();
 				RegistrationResult registration = Queries.registerNewUser(signup, roles.get(roleChoice).toUpperCase());
 				if(registration.successful()) {
 					System.out.println("New user " + signup.get("username") + " successfully created!");

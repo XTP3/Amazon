@@ -18,8 +18,9 @@ public class MenuRoleSwitch {
 				this.registrationResult = new Vendor(scanner, user).getRegistrationResult();
 				break;
 				
-			default: 
-				this.registrationResult = new Customer(scanner, user).getRegistrationResult();
+			default:
+				System.out.println("DEFAULT MENU ROLE SWITCH");
+				this.registrationResult = new RegistrationResult(true, user.getUserID());
 				break;
 		}
 	}
