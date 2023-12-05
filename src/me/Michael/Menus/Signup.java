@@ -25,7 +25,7 @@ public class Signup {
 				Predicate<String> roleCondition = input -> roles.containsKey(input);
 				Menu.prompt("Role Selection", roles);
 				roleChoice = InputLoop.stringInputLoop(scanner, roleCondition, "\nRole: ", "Invalid role!");
-				Menu.close();
+				Menu.horizontalLine();
 				RegistrationResult registration = Queries.registerNewUser(signup, roles.get(roleChoice).toUpperCase());
 				if(registration.successful()) {
 					System.out.println("New user " + signup.get("username") + " successfully created!");

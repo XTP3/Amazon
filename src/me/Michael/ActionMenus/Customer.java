@@ -13,13 +13,13 @@ public class Customer {
 	public Customer(Scanner scanner, User user) {
 		LinkedHashMap<String, String> customerActions = Utils.createPairs(
 				"1", "View All Products",
-				"2", "Purchase Product",
-				"3", "View Personal Wishlist", 
-				"4", "Clear Personal Wishlist", 
-				"5", "View Cart", 
-				"6", "Clear Cart", 
-				"7", "View Orders", 
-				"8", "View Order History", 
+				"2", "Add Product to Cart",
+				"3", "View Cart", 
+				"4", "Clear Cart", 
+				"5", "Checkout",
+				"6", "View Wishlist", 
+				"7", "Clear Wishlist", 
+				"8", "View Orders",  
 				"9", "View Personal Info", 
 				"L", "Logout"
 		);
@@ -30,6 +30,10 @@ public class Customer {
 			switch(actions.getInput()) {
 				case "1":
 					CustomerActions.getAllProducts();
+					break;
+					
+				case "2":
+					CustomerActions.addProductToCart(scanner, user);
 					break;
 					
 				case "L":

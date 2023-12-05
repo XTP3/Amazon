@@ -21,7 +21,7 @@ public class Vendor {
 		Predicate<String> emailCondition = input -> Utils.validLength(input, 0, 255);
 		Predicate<String> routingNumberCondition = input -> Utils.isAllDigits(input) && Utils.validLength(input, 0, 50);
 		Predicate<String> accountNumberCondition = input -> Utils.isAllDigits(input) && Utils.validLength(input, 0, 50);
-		Menu.close();
+		Menu.horizontalLine();
 		System.out.println("Customer Details\n");
 		String vendorName = InputLoop.stringInputLoop(scanner, vendorNameCondition, "Vendor Name: ", "Invalid vendor name! Must be between 1-25 characters long.");
 		String phoneNumber = InputLoop.stringInputLoop(scanner, phoneNumberCondition, "Phone Number: ", "Invalid phone number! Must be 10 digits long.");

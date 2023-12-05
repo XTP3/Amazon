@@ -14,7 +14,7 @@ public class Menu {
 		//System.out.print("\nChoice: ");
 	}
 	
-	public static void close() {
+	public static void horizontalLine() {
 		System.out.println(Menu.horizontalLine);
 	}
 }

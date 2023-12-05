@@ -82,32 +82,29 @@ public class Queries {
 		return new RegistrationResult(false, "");
 	}
 	
-	public static boolean usernameTaken(String username) {
-		boolean taken = false;
-		ResultSet user = Database.retrieve("SELECT username FROM user WHERE username='" + username + "'");
+	public static boolean tupleExists(ResultSet rs) {
 		try {
-			while(user.next()) {
-				taken = true;
-			}
-			user.close();
+			return rs.next();
 		}catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
-		return taken;
 	}
 	
-	public static boolean venderNameTaken(String vendorName) {
-		boolean taken = false;
-		ResultSet vendor = Database.retrieve("SELECT vendorName FROM vendor WHERE vendorName='" + vendorName + "'");
-		try {
-			while(vendor.next()) {
-				taken = true;
-			}
-			vendor.close();
-		}catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return taken;
+	public static boolean usernameTaken(String username) {
+		return Queries.tupleExists(Database.retrieve("SELECT username FROM user WHERE username='" + username + "'"));
+	}
+	
+	public static boolean vendorNameTaken(String vendorName) {
+		return Queries.tupleExists(Database.retrieve("SELECT vendorName FROM vendor WHERE vendorName='" + vendorName + "'"));
+	}
+	
+	public static boolean userCartExists(User user) {
+		return Queries.tupleExists(Database.retrieve("SELECT customerID FROM cart WHERE customerID='" + user.getUserID() + "'"));
+	}
+	
+	public static boolean productExists(String productID) {
+		return Queries.tupleExists(Database.retrieve("SELECT productName FROM product WHERE productID=" + Integer.parseInt(productID) + "'"));
 	}
 	
 	public static ResultSet getUser(String username, String password) {
@@ -160,5 +157,9 @@ public class Queries {
 	
 	public static ResultSet getAllVideos() {
 		return Database.retrieve("SELECT * FROM video");
+	}
+	
+	public static ResultSet getCart(User user) {
+		return Database.retrieve("SELECT * FROM cart WHERE customerID='" + user.getUserID() + "'");
 	}
 }

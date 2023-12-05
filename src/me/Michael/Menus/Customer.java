@@ -53,7 +53,7 @@ public class Customer {
 		Predicate<String> primeStatusCondition = input -> input.toLowerCase().equals("y") || input.toLowerCase().equals("n");
 		Predicate<String> phoneNumberCondition = input -> Utils.isAllDigits(input) && input.length() == 10;
 		Predicate<String> emailCondition = input -> Utils.validLength(input, 0, 255);
-		Menu.close();
+		Menu.horizontalLine();
 		System.out.println("Customer Details\n");
 		String firstName = InputLoop.stringInputLoop(scanner, nameCondition, "First Name: ", "Invalid first name! Must be between 1-25 characters long.");
 		String lastName = InputLoop.stringInputLoop(scanner, nameCondition, "Last Name: ", "Invalid last name! Must be between 1-25 characters long.");
