@@ -5,11 +5,13 @@ import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.function.Predicate;
 
+import me.Michael.Amazon.CartCreationResult;
 import me.Michael.Amazon.InputLoop;
 import me.Michael.Amazon.Menu;
 import me.Michael.Amazon.Queries;
 import me.Michael.Amazon.User;
 import me.Michael.Utils.QueryDisplayer;
+import me.Michael.Utils.UserDataFormatter;
 import me.Michael.Utils.Utils;
 
 public class CustomerActions {
@@ -18,7 +20,7 @@ public class CustomerActions {
 		new QueryDisplayer(Queries.getAllProducts());
 	}
 	
-	private static void addProductToCart(User user, String productID) {
+	/*private static void addProductToCart(User user, String productID) {
 		ResultSet cart = Queries.getCart(user);
 		String cartID;
 		try {
@@ -28,12 +30,12 @@ public class CustomerActions {
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 	
 	public static void addProductToCart(Scanner scanner, User user) {
 		Predicate<String> productIDCondition = input -> Utils.isAllDigits(input);
 		boolean productFound = false;
-		String productID;
+		String productID = "";
 		Menu.horizontalLine();
 		System.out.println("Add Product to Cart");
 		while(!productFound) {
@@ -46,11 +48,32 @@ public class CustomerActions {
 		}
 		if(Queries.userCartExists(user)) {
 			// Add to cart inventory
-			
-			
+			ResultSet usersCart = Queries.getCart(user);
+			String cartID = "";
+			try {
+				cartID = usersCart.getString("cartID");
+			}catch (SQLException e) {
+				e.printStackTrace();
+			}
+			System.out.println("CARTID: " + cartID);
+			boolean insertSuccessful = Queries.insertIntoCartInventory("fEf8U-MdYXI0J13CHiXv", productID);
+			if(insertSuccessful) {
+				System.out.println("Item added to cart!");
+			}else {
+				System.out.println("Couldn't add item to cart!");
+			}
 			
 		}else {
 			// Create cart and add to inventory
+			CartCreationResult cart = Queries.createCart(user);
+			if(cart.successful()) {
+				boolean insertSuccessful = Queries.insertIntoCartInventory(cart.getCartID(), productID);
+				if(insertSuccessful) {
+					System.out.println("Item added to cart!");
+				}else {
+					System.out.println("Couldn't add item to cart!");
+				}
+			}
 		}
 	}
 	
@@ -74,4 +97,9 @@ public class CustomerActions {
 		
 	}
 	
+	public static void getPersonalInfo(User user) {
+		Menu.horizontalLine();
+		System.out.println(UserDataFormatter.displayUserData(user));
+		Menu.horizontalLine();
+	}	
 }

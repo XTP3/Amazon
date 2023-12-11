@@ -36,6 +36,10 @@ public class Customer {
 					CustomerActions.addProductToCart(scanner, user);
 					break;
 					
+				case "9":
+					CustomerActions.getPersonalInfo(user);
+					break;
+					
 				case "L":
 					System.out.println("Goodbye!");
 					prompt = false;

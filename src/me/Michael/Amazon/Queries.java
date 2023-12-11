@@ -104,7 +104,7 @@ public class Queries {
 	}
 	
 	public static boolean productExists(String productID) {
-		return Queries.tupleExists(Database.retrieve("SELECT productName FROM product WHERE productID=" + Integer.parseInt(productID) + "'"));
+		return Queries.tupleExists(Database.retrieve("SELECT productName FROM product WHERE productID=" + Integer.parseInt(productID)));
 	}
 	
 	public static ResultSet getUser(String username, String password) {
@@ -160,6 +160,34 @@ public class Queries {
 	}
 	
 	public static ResultSet getCart(User user) {
-		return Database.retrieve("SELECT * FROM cart WHERE customerID='" + user.getUserID() + "'");
+		return Database.retrieve("SELECT cartID FROM cart WHERE customerID='" + user.getUserID() + "'");
+	}
+	
+	public static CartCreationResult createCart(User user) {
+		String query = "INSERT INTO cart (cartID, customerID) VALUES (?, ?)";
+		try(PreparedStatement preparedStatement = Database.connection.prepareStatement(query)) {
+			String cartID = Utils.generateUniqueID(20);
+	    	preparedStatement.setString(1, cartID);
+	        preparedStatement.setString(2, user.getUserID());
+	        return new CartCreationResult(preparedStatement.executeUpdate() > 0, cartID);
+	        
+	    }catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+		return new CartCreationResult(false, "");
+	}
+	
+	public static boolean insertIntoCartInventory(String cartID, String productID) {
+		String query = "INSERT INTO cartInventory (cartID, productID) VALUES (?, ?)";
+		
+	    try(PreparedStatement preparedStatement = Database.connection.prepareStatement(query)) {
+	    	preparedStatement.setString(1, cartID);
+	        preparedStatement.setInt(2, Integer.parseInt(productID));
+	        return preparedStatement.executeUpdate() > 0;
+	        
+	    }catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+		return false;
 	}
 }
