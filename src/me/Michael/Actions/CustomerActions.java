@@ -51,12 +51,13 @@ public class CustomerActions {
 			ResultSet usersCart = Queries.getCart(user);
 			String cartID = "";
 			try {
-				cartID = usersCart.getString("cartID");
+				while(usersCart.next()) {
+					cartID = usersCart.getString("cartID");
+				}
 			}catch (SQLException e) {
 				e.printStackTrace();
 			}
-			System.out.println("CARTID: " + cartID);
-			boolean insertSuccessful = Queries.insertIntoCartInventory("fEf8U-MdYXI0J13CHiXv", productID);
+			boolean insertSuccessful = Queries.insertIntoCartInventory(cartID, productID);
 			if(insertSuccessful) {
 				System.out.println("Item added to cart!");
 			}else {
@@ -85,12 +86,17 @@ public class CustomerActions {
 		
 	}
 	
-	public static void viewCart() {
-		
+	public static void viewCart(User user) {
+		new QueryDisplayer(Queries.getCartInventory(user));
 	}
 	
-	public static void clearCart() {
-		
+	public static void clearCart(User user) {
+		boolean cartCleared = Queries.clearCartInventory(user);
+		if(cartCleared) {
+			System.out.println("Cart cleared!");
+		}else {
+			System.out.println("Couldn't clear cart!");
+		}
 	}
 	
 	public static void viewOrders() {

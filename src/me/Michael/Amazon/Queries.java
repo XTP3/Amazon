@@ -160,7 +160,11 @@ public class Queries {
 	}
 	
 	public static ResultSet getCart(User user) {
-		return Database.retrieve("SELECT cartID FROM cart WHERE customerID='" + user.getUserID() + "'");
+		return Database.retrieve("SELECT * FROM cart WHERE customerID='" + user.getUserID() + "'");
+	}
+	
+	public static ResultSet getCartInventory(User user) {
+		return Database.retrieve("SELECT * FROM product WHERE productID IN (SELECT productID FROM cart JOIN cartInventory ON cart.cartID = cartInventory.cartID WHERE cart.customerID = '" + user.getUserID() + "')");
 	}
 	
 	public static CartCreationResult createCart(User user) {
@@ -183,6 +187,25 @@ public class Queries {
 	    try(PreparedStatement preparedStatement = Database.connection.prepareStatement(query)) {
 	    	preparedStatement.setString(1, cartID);
 	        preparedStatement.setInt(2, Integer.parseInt(productID));
+	        return preparedStatement.executeUpdate() > 0;
+	        
+	    }catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+		return false;
+	}
+	
+	public static boolean clearCartInventory(User user) {
+		String cartID = "";
+		ResultSet cart = Queries.getCart(user);
+		try {
+			while(cart.next()) {
+				cartID = cart.getString("cartID");
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try(PreparedStatement preparedStatement = Database.connection.prepareStatement("DELETE FROM cartInventory WHERE cartID='" + cartID + "'")) {
 	        return preparedStatement.executeUpdate() > 0;
 	        
 	    }catch (SQLException e) {

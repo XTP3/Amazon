@@ -36,6 +36,14 @@ public class Customer {
 					CustomerActions.addProductToCart(scanner, user);
 					break;
 					
+				case "3":
+					CustomerActions.viewCart(user);
+					break;
+					
+				case "4":
+					CustomerActions.clearCart(user);
+					break;
+					
 				case "9":
 					CustomerActions.getPersonalInfo(user);
 					break;
